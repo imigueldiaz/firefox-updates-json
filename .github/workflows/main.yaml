@@ -1,0 +1,40 @@
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+          npm install
+          npm i -g @vercel/ncc
+
+      - name: Build
+        run: |
+          ncc build index.js --license licenses.txt
+      - name Commit
+        run: |
+          git config --global user.email "imigueldiaz@gmail.com"
+          git config --global user.name "Ignacio de Miguel Diaz"
+          git add .
+          git commit -m "Automatic build of the action"
+          git push
+      - name: Run
+        run: |
+          node dist/index.js
+
+
+
+
