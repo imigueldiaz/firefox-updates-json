@@ -4,7 +4,9 @@
   "description": "A GitHub Action to create and handle a self hosted signed firefox extension updates",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build index.js --license licenses.txt"
+
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,7 @@
     "github-action"
   ],
   "author": "Ignacio de Miguel Díaz",
+  "email": "imigueldiaz@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/imigueldiaz/firefox-updates-json/issues"
