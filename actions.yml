@@ -1,13 +1,22 @@
 name: 'Firefox extension updates'
 description: 'A GitHub Action to create and handle a self hosted signed firefox extension updates'
 inputs:
+
+  branch:
+    description: 'Branch to be used for the update url'
+    required: true
+    default: 'main'
+  file_name:
+    description: 'File name of the extension with the relative path from branch'
+    required: true
+    default: 'extension.xpi'
   manifest:
     description: 'manifest.json file path'
-    required: false
+    required: true
     default: './manifest.json'
   updates_file:
     description: 'update.json file path'
-    required: false
+    required: true
     default: './updates.json'
   create_version:
     description: 'create version entry if it does not exists'
@@ -17,6 +26,14 @@ inputs:
     description: 'update version entry if it does exists'
     required: false
     default: false
+  update_info_url:
+    description: 'Full URL to the update info'
+    required: false
+    default: ''
+  update_manifest:
+    description: 'update the manifest update_url'
+    required: false
+    default: true
 outputs:
   version:
     description: 'Version on the manifest'
