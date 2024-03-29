@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: |
           ncc build index.js --license licenses.txt
-      - name Commit
+      - name: Commit
         run: |
           git config --global user.email "imigueldiaz@gmail.com"
           git config --global user.name "Ignacio de Miguel Diaz"
