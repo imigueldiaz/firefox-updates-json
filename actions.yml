@@ -1,0 +1,26 @@
+name: 'Firefox extension updates'
+description: 'A GitHub Action to create and handle a self hosted signed firefox extension updates'
+inputs:
+  manifest:
+    description: 'manifest.json file path'
+    required: false
+    default: './manifest.json'
+  updates_file:
+    description: 'update.json file path'
+    required: false
+    default: './updates.json'
+  create_version:
+    description: 'create version entry if it does not exists'
+    required: false
+    default: true
+  update_version:
+    description: 'update version entry if it does exists'
+    required: false
+    default: false
+outputs:
+  version:
+    description: 'Version on the manifest'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+

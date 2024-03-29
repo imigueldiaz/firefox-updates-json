@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "Mock Extension",
+  "version": "0.1",
+  "description": "Mock Extension for testing",
+  "default_locale": "en",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "extension.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "64": "icons/icon64.png",
+      "128": "icons/icon128.png",
+      "256": "icons/icon256.png",
+      "512": "icons/icon512.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "MockExtensionID"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["lib/purify.min.js"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self';"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["_locales/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+
+}
