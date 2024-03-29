@@ -29,12 +29,15 @@ jobs:
           git config --global user.email "imigueldiaz@gmail.com"
           git config --global user.name "Ignacio de Miguel Diaz"
           git add .
-          git commit -m "Automatic build of the action"
-          git push
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Automatic build of the action"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+
       - name: Run
         run: |
           node dist/index.js
-
-
 
 
