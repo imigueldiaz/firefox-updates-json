@@ -27,7 +27,7 @@ To use this action in your workflow, add the following step:
 
 ```yaml
 - name: Firefox Extension Updates
-  uses: your-username/your-repo@main
+  uses: imigueldiaz/firefox-updates-json@V1.1
   with:
     branch: 'main'
     file_name: 'extension.xpi'
