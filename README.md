@@ -6,6 +6,31 @@ This GitHub Action automates the process of creating and handling self-hosted si
 
 **This action is still really untested and unfinished and should not be used in production. By now it is a proof of concept of only a few hours of work**
 
+
+## Prerequisites
+
+To build the extension locally you need to have the package `@vercel/ncc` by [@vercel](https://github.com/vercel) installed globally.
+
+```bash
+npm i -g @vercel/ncc
+```
+
+## Building the extension
+
+Later you can build the extension with the commands:
+
+```bash
+npm install
+npm run build
+```
+
+the extension will be built in the `dist` folder.
+
+## Mock files
+
+The `manifest.json` and `extension.xpi` files are mock files that are used to simulate the extension and its manifest. You can replace them with the actual files of your extension.
+
+
 ## Inputs
 
 - `branch` (required): The branch to be used for the update URL. Default is `'main'`.
@@ -47,3 +72,16 @@ The action performs the following steps:
     Optionally updates the update_url in the manifest.json file.
 
 By using this action, you can automate the process of managing your Firefox extension updates directly from your GitHub repository.
+
+## License
+
+The scripts and documentation in this project are released under the MIT License
+
+## Contributions
+
+Contributions are welcome. Feel free to open a PR or file an issue.
+
+## Acknowledgements
+
+[@vercel](https://github.com/vercel) for the `@vercel/ncc` package.
+
