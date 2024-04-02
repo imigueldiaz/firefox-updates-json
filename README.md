@@ -24,7 +24,20 @@ npm install
 npm run build
 ```
 
+
 the extension will be built in the `dist` folder.
+
+## Run the action locally to mock the extension update URL
+
+You can run locally the action with the command:
+
+```bash
+node dist/index.js
+````
+
+The action will update or create the `updates.json` file with the new version of the extension and the `manifest.json` file with the new update URL.
+
+
 
 ## Mock files
 

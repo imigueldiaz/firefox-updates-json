@@ -2,7 +2,7 @@
   "name": "firefox-updates-json",
   "version": "1.0.0",
   "description": "A GitHub Action to create and handle a self hosted signed firefox extension updates",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "ncc build index.js --license licenses.txt"
