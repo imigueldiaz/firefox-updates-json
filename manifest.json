@@ -26,17 +26,24 @@
     "page": "options.html"
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "background.js"
+    ]
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "MockExtensionID"
+      "id": "MockExtensionID",
+      "update_url": "https://raw.githubusercontent.com/imigueldiaz/firefox-updates-json/main/updates.json"
     }
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["lib/purify.min.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "lib/purify.min.js"
+      ]
     }
   ],
   "content_security_policy": {
@@ -44,9 +51,12 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["_locales/*"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "_locales/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
-
 }
