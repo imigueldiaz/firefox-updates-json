@@ -1,20 +1,29 @@
+require('dotenv').config();
+
 const core = require("@actions/core");
 const github = require("@actions/github");
 const fs = require("fs");
 const crypto = require("crypto");
+const path = require("path");
 
 const owner = github.context.repo.owner;
 const repo = github.context.repo.repo;
 
+
 async function calculateSHA512(filename) {
-	return new Promise((resolve, reject) => {
-		const hash = crypto.createHash('sha512');
-		const stream = fs.createReadStream(filename);
-		stream.on('error', err => reject(err));
-		stream.on('data', chunk => hash.update(chunk));
-		stream.on('end', () => resolve(hash.digest('hex')));
-	});
+  return new Promise((resolve, reject) => {
+    if (!filename || !fs.existsSync(filename)) {
+      reject(new Error(`File not found at path: ${__dirname}/${filename}`));
+      return;
+    }
+    const hash = crypto.createHash('sha512');
+    const stream = fs.createReadStream(filename);
+    stream.on('error', err => reject(err));
+    stream.on('data', chunk => hash.update(chunk));
+    stream.on('end', () => resolve(hash.digest('hex')));
+  });
 }
+
 
 async function main() {
 	try {
@@ -165,3 +174,9 @@ async function main() {
 }
 
 main();
+
+module.exports = {
+	calculateSHA512,
+	main
+};
+
