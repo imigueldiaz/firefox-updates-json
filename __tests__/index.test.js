@@ -1,3 +1,20 @@
+process.env.GITHUB_REPOSITORY = 'test-owner/test-repo';
+
+jest.mock('@actions/core', () => ({
+  getInput: jest.fn(),
+  setOutput: jest.fn(),
+  setFailed: jest.fn(),
+}));
+
+jest.mock('@actions/github', () => ({
+  context: {
+    repo: {
+      owner: 'test-owner',
+      repo: 'test-repo',
+    },
+  },
+}));
+
 const { calculateSHA512 } = require('../index');
 const fs = require('fs');
 const crypto = require('crypto');

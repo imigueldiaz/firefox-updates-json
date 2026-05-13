@@ -6,6 +6,7 @@ This GitHub Action automates the process of creating and handling self-hosted si
 
 **This action is still really untested and unfinished and should not be used in production. By now it is a proof of concept of only a few hours of work**
 
+> Note: Recent maintenance updates include a security dependency override for `undici` and improved local test isolation.
 
 ## Prerequisites
 
@@ -17,23 +18,23 @@ npm i -g @vercel/ncc
 
 ## Building the extension
 
-Later you can build the extension with the commands:
+Install dependencies, run tests, and build the extension with:
 
 ```bash
 npm install
+npm test
 npm run build
 ```
 
-
-the extension will be built in the `dist` folder.
+The extension will be built in the `dist` folder.
 
 ## Run the action locally to mock the extension update URL
 
-You can run locally the action with the command:
+After building the action, run:
 
 ```bash
 node dist/index.js
-````
+```
 
 The action will update or create the `updates.json` file with the new version of the extension and the `manifest.json` file with the new update URL.
 
@@ -65,7 +66,7 @@ To use this action in your workflow, add the following step:
 
 ```yaml
 - name: Firefox Extension Updates
-  uses: imigueldiaz/firefox-updates-json@V1.1
+  uses: imigueldiaz/firefox-updates-json@v1.1
   with:
     branch: 'main'
     file_name: 'extension.xpi'
@@ -94,7 +95,10 @@ The scripts and documentation in this project are released under the MIT License
 
 Contributions are welcome. Feel free to open a PR or file an issue.
 
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for the project history and recent maintenance updates.
+
 ## Acknowledgements
 
 [@vercel](https://github.com/vercel) for the `@vercel/ncc` package.
-
