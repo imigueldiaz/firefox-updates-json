@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.3.0] - 2026-08-02
+
+### Fixed
+- `create_version` and `update_version` inputs are now parsed as real booleans. Previously `core.getInput('create_version') || true` treated the string `"false"` as truthy, so `create_version: false` never disabled version creation and the `update_version` branch was unreachable.
+- `update_info_url` input is now actually read and written into the generated `updates.json` entry. It was previously declared in `action.yml`/README but never consumed by `index.js`.
+
+### Security
+- Resolved 4 open Dependabot alerts (`js-yaml`, `brace-expansion`, `@babel/core`) via `npm audit fix`.
+
 ## [1.1.0] - 2026-05-13
 
 ### Fixed

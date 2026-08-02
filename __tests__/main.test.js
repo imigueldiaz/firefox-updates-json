@@ -55,6 +55,7 @@ describe('main', () => {
       .mockReturnValueOnce('true')
       .mockReturnValueOnce('false')
       .mockReturnValueOnce('main')
+      .mockReturnValueOnce('')
       .mockReturnValueOnce('true');
 
     await main();
@@ -82,5 +83,83 @@ describe('main', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('Extension ID:', 'MockExtensionID');
     expect(consoleLogSpy).toHaveBeenCalledWith('Version:', '0.1');
     expect(consoleLogSpy).toHaveBeenCalledWith('Done');
+  });
+
+  it('should write update_info_url in the update entry when provided', async () => {
+    const parentDir = path.dirname(__dirname);
+    const testFilePath = path.join(parentDir, 'extension.xpi');
+    const testContent = 'This is a test file for extension.xpi';
+    fs.writeFileSync(testFilePath, testContent);
+
+    readFileSyncSpy = jest.spyOn(fs, 'readFileSync')
+      .mockReturnValueOnce('{"browser_specific_settings":{"gecko":{"id":"MockExtensionID"}},"version":"0.1"}')
+      .mockReturnValueOnce('{"addons":{}}');
+
+    writeFileSyncSpy = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
+
+    core.getInput
+      .mockReturnValueOnce('extension.xpi')
+      .mockReturnValueOnce('manifest.json')
+      .mockReturnValueOnce('updates.json')
+      .mockReturnValueOnce('true')
+      .mockReturnValueOnce('false')
+      .mockReturnValueOnce('main')
+      .mockReturnValueOnce('https://example.com/update-info.html')
+      .mockReturnValueOnce('true');
+
+    await main();
+
+    const updatesCall = writeFileSyncSpy.mock.calls.find(call => call[0] === 'updates.json');
+    expect(JSON.parse(updatesCall[1])).toEqual(expect.objectContaining({
+      addons: {
+        MockExtensionID: {
+          updates: [
+            expect.objectContaining({
+              update_info_url: 'https://example.com/update-info.html',
+            }),
+          ],
+        },
+      },
+    }));
+  });
+
+  it('should not create a version entry when create_version is explicitly false, and should update instead', async () => {
+    const parentDir = path.dirname(__dirname);
+    const testFilePath = path.join(parentDir, 'extension.xpi');
+    const testContent = 'This is a test file for extension.xpi';
+    fs.writeFileSync(testFilePath, testContent);
+
+    const existingUpdates = {
+      addons: {
+        MockExtensionID: {
+          updates: [
+            { version: '0.1', update_link: 'old-link' },
+          ],
+        },
+      },
+    };
+
+    readFileSyncSpy = jest.spyOn(fs, 'readFileSync')
+      .mockReturnValueOnce('{"browser_specific_settings":{"gecko":{"id":"MockExtensionID"}},"version":"0.1"}')
+      .mockReturnValueOnce(JSON.stringify(existingUpdates));
+
+    writeFileSyncSpy = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
+
+    core.getInput
+      .mockReturnValueOnce('extension.xpi')
+      .mockReturnValueOnce('manifest.json')
+      .mockReturnValueOnce('updates.json')
+      .mockReturnValueOnce('false')
+      .mockReturnValueOnce('true')
+      .mockReturnValueOnce('main')
+      .mockReturnValueOnce('')
+      .mockReturnValueOnce('true');
+
+    await main();
+
+    const updatesCall = writeFileSyncSpy.mock.calls.find(call => call[0] === 'updates.json');
+    const writtenUpdates = JSON.parse(updatesCall[1]);
+    expect(writtenUpdates.addons.MockExtensionID.updates).toHaveLength(1);
+    expect(writtenUpdates.addons.MockExtensionID.updates[0].update_link).not.toBe('old-link');
   });
 });

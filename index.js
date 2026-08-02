@@ -24,6 +24,14 @@ async function calculateSHA512(filename) {
   });
 }
 
+function getBooleanInput(name, defaultValue) {
+  const raw = core.getInput(name);
+  if (raw === '' || raw === undefined || raw === null) {
+    return defaultValue;
+  }
+  return raw.toLowerCase() === 'true';
+}
+
 
 async function main() {
 	try {
@@ -95,8 +103,8 @@ async function main() {
 			}
 
 
-			const createVersion = core.getInput('create_version') || true;
-			const updateVersion = core.getInput('update_version') || false;
+			const createVersion = getBooleanInput('create_version', true);
+			const updateVersion = getBooleanInput('update_version', false);
 			const branch = core.getInput('branch') || "main";
 
 			let sha512;
@@ -115,6 +123,11 @@ async function main() {
 
 			if (sha512) {
 				updateEntry.update_hash = `sha512:${sha512}`;
+			}
+
+			const updateInfoUrl = core.getInput('update_info_url');
+			if (updateInfoUrl) {
+				updateEntry.update_info_url = updateInfoUrl;
 			}
 
 			if (createVersion) {
@@ -150,7 +163,7 @@ async function main() {
       		// Write updates.json
 			fs.writeFileSync(updatesPath, JSON.stringify(updates, null, 2), { encoding: 'utf8' });
 
-			const updateManifest = core.getInput('update_manifest') || true;
+			const updateManifest = getBooleanInput('update_manifest', true);
 
 			// Update manifest.json
 			if (updateManifest) {
